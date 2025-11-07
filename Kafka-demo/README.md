@@ -26,7 +26,7 @@ End-to-end guide to run **Apache Kafka (official Docker image)** in **KRaft (no 
 
 ```bash
 # 1) Make folder
-mkdir kafka-demo && cd kafka-demo
+mkdir Kafka-demo && cd Kafka-demo
 
 # 2) Create network & volume
 docker network create kafka-net
@@ -59,3 +59,4 @@ node scoreboard.js      # terminal 1
 node commentary.js      # terminal 2
 node analytics.js       # terminal 3
 node producer.js        # terminal 4
+

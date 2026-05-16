@@ -32,7 +32,31 @@ mkdir Kafka-demo && cd Kafka-demo
 docker network create kafka-net
 docker volume create kafka-data
 
-# 3) Create config file (server.properties) → content below
+# 3) Create server.properties file
+# Windows:
+# Right click → New → Text Document
+# Rename to: server.properties
+#
+# Linux/macOS/Git Bash:
+# touch server.properties
+
+# 4) Add below content into server.properties
+
+process.roles=broker,controller
+node.id=1
+controller.quorum.voters=1@localhost:9093
+
+listeners=PLAINTEXT://:9092,CONTROLLER://:9093
+advertised.listeners=PLAINTEXT://localhost:9092
+
+inter.broker.listener.name=PLAINTEXT
+controller.listener.names=CONTROLLER
+
+listener.security.protocol.map=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+
+log.dirs=/var/lib/kafka/data
+
+offsets.topic.replication.factor=1
 
 # 4) Generate Cluster ID
 docker run --rm apache/kafka:4.1.0 /opt/kafka/bin/kafka-storage.sh random-uuid

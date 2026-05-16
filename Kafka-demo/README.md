@@ -33,6 +33,21 @@ docker network create kafka-net
 docker volume create kafka-data
 
 # 3) Create config file (server.properties) → content below
+
+Optional if u get error : Exception in thread "main" java.io.IOException: Is a directory
+then run :
+@"
+process.roles=broker,controller
+node.id=1
+controller.quorum.voters=1@localhost:9093
+listeners=PLAINTEXT://:9092,CONTROLLER://:9093
+inter.broker.listener.name=PLAINTEXT
+controller.listener.names=CONTROLLER
+listener.security.protocol.map=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+log.dirs=/var/lib/kafka/data
+offsets.topic.replication.factor=1
+"@ | Set-Content server.properties
+
 # 4) Generate Cluster ID
 docker run --rm apache/kafka:4.1.0 /opt/kafka/bin/kafka-storage.sh random-uuid
 

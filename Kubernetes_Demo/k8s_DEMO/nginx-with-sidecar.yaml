@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-with-sidecar
+spec: 
+  containers:
+    # 1. Your main container
+    - name: nginx
+      image: nginx:latest
+      ports: 
+        - containerPort: 80
+      resources:
+        requests:
+          cpu: "250m"      # 1/4 of a CPU core guaranteed
+          memory: "64Mi"   # 64 Megabytes of RAM guaranteed
+        limits:
+          cpu: "500m"      # Hard cap of 1/2 a CPU core
+          memory: "128Mi"  # Hard cap of 128 Megabytes of RAM
+
+    # 2. The sidecar container (generating logs)
+    - name: sidecar
+      image: busybox:latest
+      command: ["/bin/sh", "-c"]
+      args: 
+        - "while true; do echo 'Sidecar log: Everything is running fine'; sleep 5; done"
+      resources:
+        requests:
+          cpu: "50m"       # Tiny amount of CPU for a simple script
+          memory: "32Mi"
+        limits:
+          cpu: "100m"
+          memory: "64Mi"
+

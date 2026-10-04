@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: postgres
+  namespace: taskflow
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: postgres
+
+  template:
+    metadata:
+      labels:
+        app: postgres
+
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:18
+
+          env:
+            - name: POSTGRES_USER
+              value: taskflow
+
+            - name: POSTGRES_PASSWORD
+              value: CHANGE_ME_DEMO_PASSWORD
+
+            - name: POSTGRES_DB
+              value: taskflow
+
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - name: postgres-data
+              mountPath: /var/lib/postgresql
+
+      volumes:
+        - name: postgres-data
+          persistentVolumeClaim:
+            claimName: postgres-pvc 
+
+
+
+---
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: postgres
+  namespace: taskflow
+
+spec:
+  selector:
+    app: postgres
+
+  ports:
+    - port: 5432
+      targetPort: 5432

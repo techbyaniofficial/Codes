@@ -1,0 +1,14 @@
+{
+    "name": "taskflow-backend",
+    "version": "1.0.0",
+    "description": "Simple TaskFlow backend",
+    "type": "module",
+    "scripts": {
+        "start": "node src/server.js",
+        "dev": "node --watch src/server.js"
+    },
+    "dependencies": {
+        "express": "^5.1.0",
+        "pg": "^8.16.3"
+    }
+}

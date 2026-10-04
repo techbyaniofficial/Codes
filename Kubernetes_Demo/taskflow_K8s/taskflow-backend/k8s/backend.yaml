@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: backend
+  namespace: taskflow
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: backend
+
+  template:
+    metadata:
+      labels:
+        app: backend
+
+    spec:
+      containers:
+        - name: backend
+          image: taskflow-backend:1.0
+
+          env:
+            - name: PORT
+              value: "8080"
+
+            - name: DB_HOST
+              value: "postgres"
+
+            - name: DB_PORT
+              value: "5432"
+
+            - name: DB_NAME
+              value: "taskflow"
+
+            - name: DB_USER
+              value: "taskflow"
+
+            - name: DB_PASSWORD
+              value: "CHANGE_ME_DEMO_PASSWORD"
+
+          ports:
+            - containerPort: 8080
+
+---
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: backend
+  namespace: taskflow
+
+spec:
+  selector:
+    app: backend
+
+  ports:
+    - port: 8080
+      targetPort: 8080
+
+
